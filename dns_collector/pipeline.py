@@ -61,6 +61,8 @@ def run(config: DnsConfig, conn: duckdb.DuckDBPyConnection) -> None:
             )
 
             # Log every resolution attempt
+            # A log is created when status is "ok", "noanswer", "nxdomain", "timeout",
+            # or "error"
             conn.execute(
                 "INSERT INTO resolution_log (run_id, domain_id, record_type, status) "
                 "VALUES (?, ?, ?, ?)",
