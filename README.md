@@ -63,9 +63,22 @@ Runs six SQL queries against the stored data and logs the results:
 5. **Average TTL by domain** — low TTLs can indicate fast-flux DNS behaviour.
 6. **Resolution success rate** — outcome of each resolution attempt per domain, surfacing failures.
 
-
-
 ## Data model
+
+**Sample rows after one pipeline run:**
+
+```
+domains           →  id=1  name=amazon.com
+                     id=2  name=apple.com
+
+dns_records       →  run_id=1  domain_id=1  record_type=A   value=98.87.170.74   ttl=626
+                     run_id=1  domain_id=1  record_type=A   value=98.87.170.71   ttl=626
+
+resolution_log    →  run_id=1  domain_id=1  record_type=A     status=ok
+                     run_id=1  domain_id=1  record_type=AAAA  status=noanswer
+
+runs              →  id=1  started_at=2026-04-22 23:10:28  finished=True
+```
 
 ```
 runs                            domains                         dns_records
