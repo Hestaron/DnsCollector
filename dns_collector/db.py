@@ -35,13 +35,6 @@ _SCHEMA: tuple[str, ...] = (
         collected_at TIMESTAMPTZ DEFAULT now()
     )
     """,
-    """CREATE INDEX IF NOT EXISTS idx_dns_records_lookup
-    ON dns_records (domain_id, record_type, collected_at)
-    """,
-    # Supports query 1: GROUP BY record_type across all rows
-    """CREATE INDEX IF NOT EXISTS idx_dns_records_record_type
-    ON dns_records (record_type)
-    """,
     "CREATE SEQUENCE IF NOT EXISTS resolution_log_id_seq START 1",
     """
     CREATE TABLE IF NOT EXISTS resolution_log (
@@ -52,10 +45,6 @@ _SCHEMA: tuple[str, ...] = (
         status      VARCHAR NOT NULL,
         resolved_at TIMESTAMPTZ DEFAULT now()
     )
-    """,
-    # Supports query 6: join on domain_id, group by status
-    """CREATE INDEX IF NOT EXISTS idx_resolution_log_lookup
-    ON resolution_log (domain_id, status)
     """,
 )
 
