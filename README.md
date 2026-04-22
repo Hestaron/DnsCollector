@@ -94,7 +94,6 @@ resolved_at TIMESTAMPTZ
 - **Run tracking.** Every pipeline execution creates a `runs` row with `started_at` and `finished_at` timestamps. All `dns_records` and `resolution_log` rows are linked to a `run_id`, making it easy to query a specific snapshot or detect partial runs.
 - **Resolution logging.** The `resolution_log` table records the outcome of every (domain, record_type) attempt — including failures. This means NXDOMAIN, timeouts, and "no answer" are distinguishable in the database rather than silently missing. Valuable for ML models that treat "domain stopped resolving" as a signal.
 - **`value` is raw text.** MX priority (`10 aspmx.l.google.com.`) and CNAME targets are stored as the resolver returns them. This keeps the schema stable across all record types at the cost of extra parsing downstream.
-- **No recursive resolution.** CNAME chains are not followed; only the CNAME record itself is stored.
 - **Failures are non-fatal.** An NXDOMAIN or timeout for one (domain, type) pair is logged and skipped; the rest of the run continues.
 - **Resolver choice.** dnspython is used based on this paper: Analyzing_and_Comparing_DNS_Lookup_Tools_in_Python. But the resolver is decoupled from the pipeline, so it could be swapped for another implementation if desired.
 - **Explicit nameservers.** By default the resolver uses `1.1.1.1` and `8.8.8.8` (configurable in `config.toml`). This makes results reproducible across machines rather than depending on the OS resolver, which can vary between environments.
@@ -107,4 +106,4 @@ resolved_at TIMESTAMPTZ
 - **Bronze layer.** The `dns_records` table stores raw resolver output — MX values like `"10 aspmx.l.google.com."` are a single string, TXT records contain unescaped SPF/DKIM payloads, etc. A silver layer would be a good next step, if used for ML features, to parse and normalize these values into structured columns (e.g., `mx_priority`, `mx_host`, `txt_content`).
 - **No incremental/delta ingestion.** Every run resolves all domains × all record types. For large domain lists, a change-detection layer (compare against previous run) would reduce unnecessary work.
 - **Single-file DuckDB store.** Adequate for local analytics but not suitable for concurrent access or production workloads. In a real deployment this would be replaced with a proper data warehouse.
-- **E2E tests.** Usefull for production readiness.
+- **E2E tests.** Useful for production readiness.
