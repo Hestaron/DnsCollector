@@ -36,7 +36,7 @@ Requires Python ≥ 3.13 and [`uv`](https://docs.astral.sh/uv/).
 
 ```bash
 git clone https://github.com/Hestaron/dns-collector.git
-cd DnsCollector
+cd dns-collector
 uv sync
 ```
 
