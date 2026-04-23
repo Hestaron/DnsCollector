@@ -35,7 +35,7 @@ The ingestion pipeline and the analytics queries are intentionally separate entr
 Requires Python ≥ 3.13 and [`uv`](https://docs.astral.sh/uv/).
 
 ```bash
-git clone https://github.com/Hestaron/DnsCollector.git
+git clone https://github.com/Hestaron/dns-collector.git
 cd DnsCollector
 uv sync
 ```
